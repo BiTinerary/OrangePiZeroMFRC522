@@ -1,7 +1,7 @@
 # OrangePiZeroMFRC522
 RFID-MFRC522 module on Orangepi Zero running **Armbian 5.27** Ubuntu Xenial.
   
-<img src="https://github.com/BiTinerary/OrangePiZeroMFRC522/blob/master/gitImgs/644.jpg" alt="modulePinout" width="417" height="320"><img src="https://github.com/BiTinerary/OrangePiZeroMFRC522/blob/master/gitImgs/833.jpg" alt="modulePinout" width="417" height="320">
+<img src="gitImgs/644.jpg" alt="modulePinout" width="417" height="320"><img src="gitImgs/833.jpg" alt="modulePinout" width="417" height="320">
 
 When trying to get an RFID module to work with Orangepi Zero, there was alot of mixed information across forums and instructions. Some directions didn't even specify board model, only referencing **OrangePi** but supplying GPIO pins.  
   
@@ -34,7 +34,39 @@ Both pin numbers and functions listed below are useful depending on reference ma
 | 3.3v     | Pin 1 <strike>26</strike>| 3.3v               |
 -------------------------------------------------------
 * The coordinantes that have been struck were based on [this](http://auseparts.com.au/image/cache/catalog/OrangePi/Orange-Pi-Zero-Pinout-banner2-700x700.jpg) popular, but misleading picture. 
-<img src="https://github.com/BiTinerary/OrangePiZeroMFRC522/blob/master/gitImgs/821.jpg" alt="modulePinout">
+<img src="gitImgs/821.jpg" alt="modulePinout">
+
+## SPI interface activation
+
+You can enable interface thru *armbian-config* or edit *armbianEnv.txt* file:
+
+```sh 
+sudo nano /boot/armbianEnv.txt
+```
+
+`overlays` string should contain `spi-spidev` and `spi-add-cs1`. If these values are not in the `overlays`, just add them separated by spaces.
+
+You must also add the following lines:
+
+```
+param_spidev_spi_bus=1
+
+param_spidev_spi_cs=0
+```
+
+As a result, you should get a file with the following contents (added lines are highlighted in yellow):
+
+<img src="gitImgs/armbiarEnv.PNG" alt="armbianEnv" width="450" height="300" title="/boot/armbianEnv.txt">
+
+Save and reboot your OrangePi.
+
+Check that SPI is present:
+
+```
+ls /dev | grep spi
+```
+<img src="gitImgs/spi_check.png" alt="SPI check" width="400" height="44" title="SPI check">
+
 
 ## Installation
 
